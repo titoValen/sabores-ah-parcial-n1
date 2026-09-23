@@ -1,8 +1,16 @@
 import { db, ObjectId } from "../config/db.js";
 
-export async function getDishes() {
+export async function getDishes({ section, typeOfDish, vegetarian } = {}) {
   const dishesCollection = db.collection("dishes");
-  const dishes = await dishesCollection.find().toArray();
+  const filter = {};
+
+  if (section) filter.section = section;
+  if (typeOfDish) filter.typeOfDish = typeOfDish;
+  if (vegetarian !== undefined) {
+    filter.vegetarian = vegetarian === true || vegetarian === "true";
+  }
+
+  const dishes = await dishesCollection.find(filter).toArray();
 
   return dishes;
 }
