@@ -10,5 +10,6 @@ router.get("/dishes/:id/edit", viewController.renderEditDish);
 router.get("/dishes/:id", viewController.renderDish);
 router.get("/chefs", viewController.renderChefs);
 router.get("/chefs/new", viewController.renderNewChef);
+router.get("/chefs/:id/edit", viewController.renderEditChef);
 
 export default router;
