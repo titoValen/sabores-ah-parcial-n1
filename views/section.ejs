@@ -13,6 +13,9 @@
         <% sections.forEach((item) => { %>
           <a class="<%= item.id === section.id ? 'active' : '' %>" href="/sections/<%= item.id %>"><%= item.name %></a>
         <% }) %>
+        <a class="nav-chefs" href="/chefs">
+          <img src="/chef.svg" alt="" class="chef-icon" width="18" height="18" />
+        </a>
       </nav>
     </header>
 
