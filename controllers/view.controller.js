@@ -112,3 +112,23 @@ export async function renderNewChef(req, res) {
       .render("error", { message: "No se pudo cargar el formulario" });
   }
 }
+
+export async function renderEditChef(req, res) {
+  try {
+    const chef = await chefsService.getChefById(req.params.id);
+
+    if (!chef)
+      return res
+        .status(404)
+        .render("error", { message: "Chef no encontrado" });
+
+    res.render("edit-chef", { sections: SECTIONS, chef });
+  } catch (error) {
+    console.error("Error al renderizar la edición del chef:", error);
+    res
+      .status(error.statusCode || 500)
+      .render("error", {
+        message: error.message || "No se pudo cargar el formulario de edición",
+      });
+  }
+}
