@@ -1,5 +1,15 @@
 import { db, ObjectId } from "../config/db.js";
 
+function getObjectId(id) {
+  if (!ObjectId.isValid(id)) {
+    const error = new Error("ID inválido");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  return new ObjectId(id);
+}
+
 export async function getChefs() {
   const chefsCollection = db.collection("chefs");
   const chefs = await chefsCollection.find().toArray();
@@ -8,7 +18,7 @@ export async function getChefs() {
 }
 
 export async function getChefById(id) {
-  const chef = await db.collection("chefs").findOne({ _id: new ObjectId(id) });
+  const chef = await db.collection("chefs").findOne({ _id: getObjectId(id) });
 
   return chef;
 }
@@ -21,7 +31,7 @@ export async function createChef(chef) {
 export async function updateChef(id, updatedChef) {
   const result = await db
     .collection("chefs")
-    .updateOne({ _id: new ObjectId(id) }, { $set: updatedChef });
+    .updateOne({ _id: getObjectId(id) }, { $set: updatedChef });
 
   return result;
 }
@@ -29,7 +39,7 @@ export async function updateChef(id, updatedChef) {
 export async function deleteChef(id) {
   const result = await db
     .collection("chefs")
-    .deleteOne({ _id: new ObjectId(id) });
+    .deleteOne({ _id: getObjectId(id) });
 
   return result;
 }
