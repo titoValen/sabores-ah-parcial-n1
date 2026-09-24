@@ -48,6 +48,9 @@
               <div class="chef-card-content">
                 <h3><%= chef.name %></h3>
                 <p><%= chef.description %></p>
+                <div class="dish-footer">
+                  <a href="/chefs/<%= chef._id %>/edit">Editar</a>
+                </div>
               </div>
             </article>
           <% }) %>
