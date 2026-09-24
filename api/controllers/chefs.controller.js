@@ -60,18 +60,25 @@ export async function createChef(req, res) {
 export async function updateChef(req, res) {
   try {
     const id = req.params.id;
-    const validationError = validateChef(req.body, true);
+    const { name, photo, description } = req.body;
+    const updatedChef = {};
+
+    if (name !== undefined) updatedChef.name = name;
+    if (photo !== undefined) updatedChef.photo = photo;
+    if (description !== undefined) updatedChef.description = description;
+
+    const validationError = validateChef(updatedChef, true);
 
     if (validationError) return res.status(400).json({ message: validationError });
-    if (Object.keys(req.body).length === 0)
+    if (Object.keys(updatedChef).length === 0)
       return res.status(400).json({ message: "Debe enviar al menos un campo para actualizar" });
 
-    const result = await chefsService.updateChef(id, req.body);
+    const result = await chefsService.updateChef(id, updatedChef);
 
     if (!result || result.matchedCount === 0)
       return res.status(404).json({ message: "Chef no encontrado" });
 
-    res.json({ message: "Chef actualizado correctamente" });
+    res.json({ message: "Chef actualizado correctamente", _id: id });
   } catch (error) {
     res.status(getErrorStatus(error)).json({ message: error.message });
   }
