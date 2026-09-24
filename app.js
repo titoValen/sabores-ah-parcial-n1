@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 import { connectDB } from "./config/db.js";
 import dishesRoutes from "./api/routes/dishes.route.js";
 import chefsRoutes from "./api/routes/chefs.route.js";
-import viewRoutes from "./routes/view.route.js";
+import viewDishesRoutes from "./routes/dishes.route.js";
+import viewChefsRoutes from "./routes/chefs.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 3333;
@@ -17,7 +18,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/dishes", dishesRoutes);
 app.use("/api/chefs", chefsRoutes);
-app.use("/", viewRoutes);
+app.use("/", viewDishesRoutes);
+app.use("/", viewChefsRoutes);
 
 const startServer = async () => {
   try {
