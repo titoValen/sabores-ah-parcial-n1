@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sabores | <%= dish.name %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Sabores</a>
+      <nav class="section-nav" aria-label="Secciones del menú">
+        <% sections.forEach((section) => { %>
+          <a href="/sections/<%= section.id %>"><%= section.name %></a>
+        <% }) %>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <a class="back-link" href="/">&larr; Volver al menú</a>
+      <article class="dish-detail">
+        <img src="<%= dish.image %>" alt="<%= dish.name %>" />
+        <div class="dish-detail-content">
+          <p class="eyebrow"><%= dish.section %> / <%= dish.typeOfDish %></p>
+          <h1><%= dish.name %></h1>
+          <p class="detail-description"><%= dish.description %></p>
+          <p class="detail-price">$<%= Number(dish.price).toLocaleString("es-AR") %></p>
+          <p class="vegetarian"><%= dish.vegetarian ? "Opción vegetariana" : "Preparación de la casa" %></p>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
