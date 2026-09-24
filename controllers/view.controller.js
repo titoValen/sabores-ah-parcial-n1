@@ -1,29 +1,57 @@
 import * as dishesService from "../services/dishes.service.js";
 
 const SECTIONS = [
-  { id: "appetizers", name: "Entrantes" },
+  { id: "entradas", name: "Entradas" },
   { id: "mains", name: "Platos principales" },
-  { id: "paste", name: "Pastas" },
-  { id: "desserts", name: "Postres" },
-  { id: "beverages", name: "Bebidas" },
+  { id: "pastas", name: "Pastas" },
+  { id: "postres", name: "Postres" },
+  { id: "bebidas", name: "Bebidas" },
 ];
 
 export async function renderDishes(req, res) {
   try {
-    res.render("index", { sections: SECTIONS });
+    const dishes = await dishesService.getDishes();
+    res.render("index", { sections: SECTIONS, dishes });
   } catch (error) {
     console.error("Error al renderizar los platos:", error);
-    res.status(500).render("error");
+    res.status(500).render("error", { message: "No se pudo cargar el menú" });
   }
 }
 
 export async function renderSection(req, res) {
   try {
     const { slug } = req.params;
-    const dishes = await dishesService.getDishesBySection({ section: slug });
-    res.render("section", { section: slug, dishes });
+    const section = SECTIONS.find((item) => item.id === slug);
+
+    if (!section)
+      return res
+        .status(404)
+        .render("error", { message: "Sección no encontrada" });
+
+    const dishes = await dishesService.getDishes({ section: slug });
+    res.render("section", { section, sections: SECTIONS, dishes });
   } catch (error) {
     console.error("Error al renderizar la sección:", error);
-    res.status(500).render("error");
+    res
+      .status(500)
+      .render("error", { message: "No se pudo cargar la sección" });
+  }
+}
+
+export async function renderDish(req, res) {
+  try {
+    const dish = await dishesService.getDishById(req.params.id);
+
+    if (!dish)
+      return res
+        .status(404)
+        .render("error", { message: "Plato no encontrado" });
+
+    res.render("dish", { dish, sections: SECTIONS });
+  } catch (error) {
+    console.error("Error al renderizar el plato:", error);
+    res
+      .status(error.statusCode || 500)
+      .render("error", { message: error.message });
   }
 }
