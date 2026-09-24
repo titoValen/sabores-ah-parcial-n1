@@ -1,11 +1,11 @@
 import * as dishesService from "../../services/dishes.service.js";
 
 const VALID_SECTIONS = new Set([
-  "appetizers",
+  "entradas",
   "mains",
   "pastas",
-  "desserts",
-  "beverages",
+  "postres",
+  "bebidas",
 ]);
 
 function validateDish(dish, partial = false) {
@@ -94,11 +94,16 @@ export async function createDish(req, res) {
     const newDish = {
       name,
       description,
-      price,
+      price: typeof price === "string" ? Number(price) : price,
       image,
       section,
       typeOfDish,
-      vegetarian,
+      vegetarian:
+        vegetarian === true || vegetarian === "true"
+          ? true
+          : vegetarian === false || vegetarian === "false"
+            ? false
+            : vegetarian,
       chefId,
     };
 
@@ -107,7 +112,7 @@ export async function createDish(req, res) {
 
     const createdDish = await dishesService.createDish(newDish);
 
-    res.status(201).json(createdDish);
+    res.status(201).json({ _id: String(createdDish) });
   } catch (error) {
     res.status(getErrorStatus(error)).json({ message: error.message });
   }
