@@ -51,7 +51,7 @@ export async function createChef(req, res) {
 
     const createdChef = await chefsService.createChef(newChef);
 
-    res.status(201).json(createdChef);
+    res.status(201).json({ _id: String(createdChef) });
   } catch (error) {
     res.status(getErrorStatus(error)).json({ message: error.message });
   }
