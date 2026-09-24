@@ -31,6 +31,29 @@ export async function renderNewDish(req, res) {
   }
 }
 
+export async function renderEditDish(req, res) {
+  try {
+    const [dish, chefs] = await Promise.all([
+      dishesService.getDishById(req.params.id),
+      chefsService.getChefs(),
+    ]);
+
+    if (!dish)
+      return res
+        .status(404)
+        .render("error", { message: "Plato no encontrado" });
+
+    res.render("edit-dish", { sections: SECTIONS, chefs, dish });
+  } catch (error) {
+    console.error("Error al renderizar la edición del plato:", error);
+    res
+      .status(error.statusCode || 500)
+      .render("error", {
+        message: error.message || "No se pudo cargar el formulario de edición",
+      });
+  }
+}
+
 export async function renderSection(req, res) {
   try {
     const { slug } = req.params;
