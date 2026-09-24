@@ -1,4 +1,5 @@
 import * as dishesService from "../services/dishes.service.js";
+import * as chefsService from "../services/chefs.services.js";
 
 const SECTIONS = [
   { id: "entradas", name: "Entradas" },
@@ -15,6 +16,18 @@ export async function renderDishes(req, res) {
   } catch (error) {
     console.error("Error al renderizar los platos:", error);
     res.status(500).render("error", { message: "No se pudo cargar el menú" });
+  }
+}
+
+export async function renderNewDish(req, res) {
+  try {
+    const chefs = await chefsService.getChefs();
+    res.render("new-dish", { sections: SECTIONS, chefs });
+  } catch (error) {
+    console.error("Error al renderizar el formulario de plato:", error);
+    res
+      .status(500)
+      .render("error", { message: "No se pudo cargar el formulario" });
   }
 }
 
