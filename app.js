@@ -1,9 +1,13 @@
 import express from "express";
-import { connectDB } from "./config/db";
+import { connectDB } from "./config/db.js";
+import dishesRoutes from "./api/routes/dishes.route.js";
+import chefsRoutes from "./api/routes/chefs.route.js";
 
 const app = express();
 
 app.use(express.json());
+app.use("/api/dishes", dishesRoutes);
+app.use("/api/chefs", chefsRoutes);
 
 const startServer = async () => {
   try {
@@ -13,6 +17,6 @@ const startServer = async () => {
     console.error("Error al iniciar el servidor:", error);
     process.exit(1);
   }
-}
+};
 
 startServer();
