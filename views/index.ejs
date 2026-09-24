@@ -38,7 +38,10 @@
             <p class="eyebrow">Nuestra carta</p>
             <h2>Todos los platos</h2>
           </div>
-          <span class="result-count"><%= dishes.length %> platos</span>
+          <div class="section-heading-actions">
+            <span class="result-count"><%= dishes.length %> platos</span>
+            <a class="button-primary" href="/dishes/new">Agregar plato</a>
+          </div>
         </div>
 
         <% if (dishes.length) { %>
