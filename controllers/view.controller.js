@@ -91,3 +91,24 @@ export async function renderDish(req, res) {
       .render("error", { message: error.message });
   }
 }
+
+export async function renderChefs(req, res) {
+  try {
+    const chefs = await chefsService.getChefs();
+    res.render("chefs", { sections: SECTIONS, chefs });
+  } catch (error) {
+    console.error("Error al renderizar los chefs:", error);
+    res.status(500).render("error", { message: "No se pudieron cargar los chefs" });
+  }
+}
+
+export async function renderNewChef(req, res) {
+  try {
+    res.render("new-chef", { sections: SECTIONS });
+  } catch (error) {
+    console.error("Error al renderizar el formulario de chef:", error);
+    res
+      .status(500)
+      .render("error", { message: "No se pudo cargar el formulario" });
+  }
+}
