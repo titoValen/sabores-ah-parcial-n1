@@ -232,6 +232,9 @@ h3 {
 }
 
 .dish-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
   margin-top: 2rem;
 }
 
@@ -266,7 +269,8 @@ h3 {
 }
 
 .button-primary,
-.button-secondary {
+.button-secondary,
+.button-danger {
   border: none;
   cursor: pointer;
   display: inline-block;
@@ -289,7 +293,8 @@ h3 {
   background: var(--accent);
 }
 
-.button-primary:disabled {
+.button-primary:disabled,
+.button-danger:disabled {
   cursor: not-allowed;
   opacity: 0.65;
 }
@@ -303,6 +308,24 @@ h3 {
 .button-secondary:hover {
   border-color: var(--accent-dark);
   color: var(--accent-dark);
+}
+
+.button-danger {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent-dark);
+}
+
+.button-danger:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.form-actions-end {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
 }
 
 .dish-form {
@@ -379,9 +402,11 @@ h3 {
 }
 
 .form-actions {
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 2rem;
 }
 
@@ -448,10 +473,19 @@ h3 {
     flex-direction: column;
   }
   .form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .form-actions-end {
     flex-direction: column-reverse;
+    margin-left: 0;
+    width: 100%;
   }
   .form-actions .button-primary,
-  .form-actions .button-secondary {
+  .form-actions .button-secondary,
+  .form-actions .button-danger,
+  .dish-actions .button-primary,
+  .dish-actions .button-danger {
     text-align: center;
     width: 100%;
   }
