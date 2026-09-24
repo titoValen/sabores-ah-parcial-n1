@@ -26,11 +26,55 @@
           <p class="detail-description"><%= dish.description %></p>
           <p class="detail-price">$<%= Number(dish.price).toLocaleString("es-AR") %></p>
           <p class="vegetarian"><%= dish.vegetarian ? "Opción vegetariana" : "Preparación de la casa" %></p>
+          <p class="form-message" id="delete-message" hidden></p>
           <div class="dish-actions">
             <a class="button-primary" href="/dishes/<%= dish._id %>/edit">Editar plato</a>
+            <button class="button-danger" type="button" id="delete-dish-btn">Eliminar plato</button>
           </div>
         </div>
       </article>
     </main>
+
+    <script>
+      const deleteButton = document.getElementById("delete-dish-btn");
+      const message = document.getElementById("delete-message");
+      const dishId = "<%= dish._id %>";
+      const dishName = "<%= dish.name %>";
+
+      function showMessage(text, isError = true) {
+        message.hidden = false;
+        message.textContent = text;
+        message.classList.toggle("is-error", isError);
+        message.classList.toggle("is-success", !isError);
+      }
+
+      deleteButton.addEventListener("click", async () => {
+        const confirmed = window.confirm(
+          `¿Eliminar "${dishName}" de la carta? Esta acción no se puede deshacer.`
+        );
+
+        if (!confirmed) return;
+
+        deleteButton.disabled = true;
+        showMessage("Eliminando plato...", false);
+
+        try {
+          const response = await fetch(`/api/dishes/${dishId}`, {
+            method: "DELETE",
+          });
+          const result = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            throw new Error(result.message || "No se pudo eliminar el plato");
+          }
+
+          showMessage("Plato eliminado. Redirigiendo...", false);
+          window.location.href = "/";
+        } catch (error) {
+          showMessage(error.message);
+          deleteButton.disabled = false;
+        }
+      });
+    </script>
   </body>
 </html>

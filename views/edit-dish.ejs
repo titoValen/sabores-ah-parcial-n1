@@ -134,8 +134,11 @@
           <p class="form-message" id="form-message" hidden></p>
 
           <div class="form-actions">
-            <a class="button-secondary" href="/dishes/<%= dish._id %>">Cancelar</a>
-            <button class="button-primary" type="submit">Guardar cambios</button>
+            <button class="button-danger" type="button" id="delete-dish-btn">Eliminar plato</button>
+            <div class="form-actions-end">
+              <a class="button-secondary" href="/dishes/<%= dish._id %>">Cancelar</a>
+              <button class="button-primary" type="submit">Guardar cambios</button>
+            </div>
           </div>
         </form>
       <% } %>
@@ -145,7 +148,9 @@
       <script>
         const form = document.getElementById("edit-dish-form");
         const message = document.getElementById("form-message");
+        const deleteButton = document.getElementById("delete-dish-btn");
         const dishId = "<%= dish._id %>";
+        const dishName = <%- JSON.stringify(dish.name) %>;
 
         function showMessage(text, isError = true) {
           message.hidden = false;
@@ -153,6 +158,34 @@
           message.classList.toggle("is-error", isError);
           message.classList.toggle("is-success", !isError);
         }
+
+        deleteButton.addEventListener("click", async () => {
+          const confirmed = window.confirm(
+            `¿Eliminar "${dishName}" de la carta? Esta acción no se puede deshacer.`
+          );
+
+          if (!confirmed) return;
+
+          deleteButton.disabled = true;
+          showMessage("Eliminando plato...", false);
+
+          try {
+            const response = await fetch(`/api/dishes/${dishId}`, {
+              method: "DELETE",
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+              throw new Error(result.message || "No se pudo eliminar el plato");
+            }
+
+            showMessage("Plato eliminado. Redirigiendo...", false);
+            window.location.href = "/";
+          } catch (error) {
+            showMessage(error.message);
+            deleteButton.disabled = false;
+          }
+        });
 
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
