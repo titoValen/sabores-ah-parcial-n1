@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI;
-const DB_NAME = process.env.DB_NAME;
+const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
+const DB_NAME = process.env.DB_NAME || "AH20232CP1";
 
 const client = new MongoClient(MONGO_URI);
 
