@@ -121,7 +121,39 @@ export async function createDish(req, res) {
 export async function updateDish(req, res) {
   try {
     const id = req.params.id;
-    const updatedDish = req.body;
+    const {
+      name,
+      description,
+      price,
+      image,
+      section,
+      typeOfDish,
+      vegetarian,
+      chefId,
+    } = req.body;
+
+    const updatedDish = {};
+
+    if (name !== undefined) updatedDish.name = name;
+    if (description !== undefined) updatedDish.description = description;
+    if (image !== undefined) updatedDish.image = image;
+    if (section !== undefined) updatedDish.section = section;
+    if (typeOfDish !== undefined) updatedDish.typeOfDish = typeOfDish;
+    if (chefId !== undefined) updatedDish.chefId = chefId;
+
+    if (price !== undefined) {
+      updatedDish.price = typeof price === "string" ? Number(price) : price;
+    }
+
+    if (vegetarian !== undefined) {
+      updatedDish.vegetarian =
+        vegetarian === true || vegetarian === "true"
+          ? true
+          : vegetarian === false || vegetarian === "false"
+            ? false
+            : vegetarian;
+    }
+
     const validationError = validateDish(updatedDish, true);
 
     if (validationError) return res.status(400).json({ message: validationError });
@@ -133,7 +165,7 @@ export async function updateDish(req, res) {
     if (!result || result.matchedCount === 0)
       return res.status(404).json({ message: "Plato no encontrado" });
 
-    res.json({ message: "Plato actualizado correctamente" });
+    res.json({ message: "Plato actualizado correctamente", _id: id });
   } catch (error) {
     res.status(getErrorStatus(error)).json({ message: error.message });
   }
