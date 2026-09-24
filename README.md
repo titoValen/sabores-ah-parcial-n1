@@ -49,8 +49,9 @@ Ejemplo:
   "name": "Ravioles de ricota",
   "description": "Ravioles caseros rellenos de ricota y espinaca.",
   "price": 8500,
-  "img": "https://picsum.photos/400/225",
+  "image": "https://picsum.photos/400/225",
   "section": "pastas",
+  "typeOfDish": "plato principal",
   "vegetarian": true,
   "chefId": "..."
 }
@@ -88,6 +89,9 @@ La API permite:
 
 - Obtener todos los chefs.
 - Crear un nuevo chef.
+- Obtener un chef específico.
+- Modificar un chef existente.
+- Eliminar un chef.
 - Obtener todos los platos pertenecientes a un chef determinado.
 
 ## Endpoints
@@ -121,6 +125,9 @@ GET /api/dishes?section=pastas&vegetarian=true
 ```text
 GET  /api/chefs
 POST /api/chefs
+GET  /api/chefs/:id
+PUT  /api/chefs/:id
+DELETE /api/chefs/:id
 GET  /api/chefs/:id/dishes
 ```
 
@@ -178,6 +185,7 @@ Ejemplo:
 ```env
 PORT=3333
 MONGODB_URI=<URL_DE_CONEXION>
+DB_NAME=AH20232CP1
 ```
 
 Iniciar el servidor:
@@ -197,13 +205,14 @@ http://localhost:3333
 La aplicación se organiza separando las responsabilidades entre las diferentes capas:
 
 ```text
-src/
-├── api/
+api/
 ├── controllers/
-├── routes/
-├── services/
-├── views/
-└── app.js
+└── routes/
+config/
+controllers/
+routes/
+services/
+app.js
 ```
 
 La estructura busca mantener separadas las responsabilidades de las rutas, controladores, servicios, API y vistas.
