@@ -1,7 +1,10 @@
 import { Router } from "express";
-import * as dishesController from "../controllers/dishes.controller.js";
+import * as viewController from "../controllers/view.controller.js";
 
 const router = Router();
 
-router.get("/", dishesController.renderDishes);
-router.get("/sections/:slug", dishesController.renderSection);
+router.get("/", viewController.renderDishes);
+router.get("/sections/:slug", viewController.renderSection);
+router.get("/dishes/:id", viewController.renderDish);
+
+export default router;
