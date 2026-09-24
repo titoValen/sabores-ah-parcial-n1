@@ -55,7 +55,10 @@
                   <p><%= dish.description %></p>
                   <div class="dish-footer">
                     <strong>$<%= Number(dish.price).toLocaleString("es-AR") %></strong>
-                    <a href="/dishes/<%= dish._id %>">Ver detalle</a>
+                    <div class="dish-card-links">
+                      <a href="/dishes/<%= dish._id %>">Ver detalle</a>
+                      <a href="/dishes/<%= dish._id %>/edit">Editar</a>
+                    </div>
                   </div>
                 </div>
               </article>

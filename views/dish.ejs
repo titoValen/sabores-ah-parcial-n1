@@ -26,6 +26,9 @@
           <p class="detail-description"><%= dish.description %></p>
           <p class="detail-price">$<%= Number(dish.price).toLocaleString("es-AR") %></p>
           <p class="vegetarian"><%= dish.vegetarian ? "Opción vegetariana" : "Preparación de la casa" %></p>
+          <div class="dish-actions">
+            <a class="button-primary" href="/dishes/<%= dish._id %>/edit">Editar plato</a>
+          </div>
         </div>
       </article>
     </main>
